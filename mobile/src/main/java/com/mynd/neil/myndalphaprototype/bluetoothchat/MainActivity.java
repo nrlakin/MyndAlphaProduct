@@ -41,6 +41,9 @@ public class MainActivity extends SampleActivityBase {
 
     // Whether the Log Fragment is currently shown
     private boolean mLogShown;
+    private static StateChanger myState;
+
+    public static StateChanger getMyState(){return myState;}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,9 @@ public class MainActivity extends SampleActivityBase {
             transaction.replace(R.id.sample_content_fragment, fragment);
             transaction.commit();
         }
+
+        myState = new StateChanger();
+        myState.setContext(this);
     }
 
     @Override

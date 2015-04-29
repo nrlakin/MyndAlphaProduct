@@ -28,6 +28,12 @@
             android:label="@string/select_device"
             android:theme="@android:style/Theme.Holo.Dialog"/>
 
+        <service android:name=".PhoneListenerService">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
