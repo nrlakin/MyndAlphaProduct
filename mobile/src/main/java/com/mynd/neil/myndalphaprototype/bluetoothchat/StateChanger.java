@@ -68,7 +68,8 @@ public class StateChanger extends Fragment{
         //changeBackgroundColor(Color.RED);
         //music on
         try {
-            AssetFileDescriptor afd = phoneContext.getAssets().openFd("alarm.mp3");//directly file name
+            //AssetFileDescriptor afd = phoneContext.getAssets().openFd("alarm.mp3");//directly file name
+            AssetFileDescriptor afd = phoneContext.getAssets().openFd("LinksAwakening.mp3");//directly file name
             FileDescriptor fileDescriptor = afd.getFileDescriptor();
             mp.reset();
             mp.setDataSource(fileDescriptor,afd.getStartOffset(),afd.getLength());

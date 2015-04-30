@@ -59,8 +59,11 @@ public class BluetoothChatFragment extends Fragment {
 
     // Layout Views
     private ListView mConversationView;
-    private EditText mOutEditText;
-    private Button mSendButton;
+    //private EditText mOutEditText;
+    //private Button mSendButton;
+    private Button mPanicButton;
+
+    private boolean mAmLost = false;
 
 
     /**
@@ -151,8 +154,9 @@ public class BluetoothChatFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mConversationView = (ListView) view.findViewById(R.id.in);
-        mOutEditText = (EditText) view.findViewById(R.id.edit_text_out);
-        mSendButton = (Button) view.findViewById(R.id.button_send);
+        //mOutEditText = (EditText) view.findViewById(R.id.edit_text_out);
+        //mSendButton = (Button) view.findViewById(R.id.button_send);
+        mPanicButton = (Button) view.findViewById(R.id.panic_button);
     }
 
     /**
@@ -167,9 +171,10 @@ public class BluetoothChatFragment extends Fragment {
         mConversationView.setAdapter(mConversationArrayAdapter);
 
         // Initialize the compose field with a listener for the return key
-        mOutEditText.setOnEditorActionListener(mWriteListener);
+        //mOutEditText.setOnEditorActionListener(mWriteListener);
 
         // Initialize the send button with a listener that for click events
+        /*
         mSendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Send a message using content of the edit text widget
@@ -177,6 +182,28 @@ public class BluetoothChatFragment extends Fragment {
                 if (null != view) {
                     TextView textView = (TextView) view.findViewById(R.id.edit_text_out);
                     String message = textView.getText().toString();
+                    sendMessage(message);
+                }
+            }
+        });*/
+
+        mPanicButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Send a message using content of the edit text widget
+                View view = getView();
+                if (null != view) {
+                    //TextView textView = (TextView) view.findViewById(R.id.edit_text_out);
+                    //String message = textView.getText().toString();
+                    String message;
+                    if (mAmLost) {
+                        message = "/AMFOUND";
+                        MainActivity.getMyState().allClear();
+                        mAmLost = false;
+                    } else {
+                        message = "/AMLOST";
+                        MainActivity.getMyState().iAmMissing();
+                        mAmLost = true;
+                    }
                     sendMessage(message);
                 }
             }
@@ -220,8 +247,8 @@ public class BluetoothChatFragment extends Fragment {
             mChatService.write(send);
 
             // Reset out string buffer to zero and clear the edit text field
-            mOutStringBuffer.setLength(0);
-            mOutEditText.setText(mOutStringBuffer);
+            //mOutStringBuffer.setLength(0);
+            //mOutEditText.setText(mOutStringBuffer);
         }
     }
 
@@ -308,7 +335,10 @@ public class BluetoothChatFragment extends Fragment {
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
-                    if (readMessage.equals("/AMLOST")) changer.someoneIsMissing();
+                    if (readMessage.equals("/AMLOST")) {
+                        changer.someoneIsMissing();
+                        Log.d("NEIL","Got lost...");
+                    }
                     else if (readMessage.equals("/AMFOUND")) changer.allClear();
                     else {
                         mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
