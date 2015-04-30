@@ -18,8 +18,10 @@
       android:orientation="vertical"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:id="@+id/sample_main_layout">
+      android:id="@+id/sample_main_layout"
+    android:keepScreenOn="true">
 
+    <!--
     <ViewAnimator
           android:id="@+id/sample_output"
           android:layout_width="match_parent"
@@ -30,7 +32,6 @@
               style="@style/Widget.SampleMessageTile"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-
             <TextView
                   style="@style/Widget.SampleMessage"
                   android:layout_width="match_parent"
@@ -40,7 +41,9 @@
                   android:paddingTop="@dimen/vertical_page_margin"
                   android:paddingBottom="@dimen/vertical_page_margin"
                   android:text="@string/intro_message" />
+
         </ScrollView>
+
 
         <fragment
               android:name="com.mynd.neil.myndalphaprototype.common.logger.LogFragment"
@@ -49,6 +52,7 @@
               android:layout_height="match_parent" />
 
     </ViewAnimator>
+    -->
 
     <View
           android:layout_width="match_parent"

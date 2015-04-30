@@ -14,7 +14,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|keyboardHidden"
+            android:configChanges="keyboardHidden"
+            android:screenOrientation="portrait"
             android:label="MyndAlphaPrototype">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

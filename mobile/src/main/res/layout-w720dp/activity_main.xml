@@ -18,7 +18,8 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:id="@+id/sample_main_layout">
+      android:id="@+id/sample_main_layout"
+      android:keepScreenOn="true">
 
     <LinearLayout
           android:id="@+id/sample_output"

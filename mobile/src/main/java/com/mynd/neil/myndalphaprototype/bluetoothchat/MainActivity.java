@@ -40,7 +40,7 @@ public class MainActivity extends SampleActivityBase {
     public static final String TAG = "MainActivity";
 
     // Whether the Log Fragment is currently shown
-    private boolean mLogShown;
+    private boolean mLogShown=true;
     private static StateChanger myState;
 
     public static StateChanger getMyState(){return myState;}
@@ -106,9 +106,9 @@ public class MainActivity extends SampleActivityBase {
         logWrapper.setNext(msgFilter);
 
         // On screen logging via a fragment with a TextView.
-        LogFragment logFragment = (LogFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.log_fragment);
-        msgFilter.setNext(logFragment.getLogView());
+        //LogFragment logFragment = (LogFragment) getSupportFragmentManager()
+        //        .findFragmentById(R.id.log_fragment);
+        //msgFilter.setNext(logFragment.getLogView());
 
         Log.i(TAG, "Ready");
     }

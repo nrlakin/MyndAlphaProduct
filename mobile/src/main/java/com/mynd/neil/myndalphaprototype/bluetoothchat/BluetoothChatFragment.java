@@ -62,6 +62,7 @@ public class BluetoothChatFragment extends Fragment {
     private EditText mOutEditText;
     private Button mSendButton;
 
+
     /**
      * Name of the connected device
      */
@@ -280,6 +281,7 @@ public class BluetoothChatFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             FragmentActivity activity = getActivity();
+            StateChanger changer = MainActivity.getMyState();
             switch (msg.what) {
                 case Constants.MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
@@ -306,8 +308,11 @@ public class BluetoothChatFragment extends Fragment {
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
-                    if (readMessage.equals("ALERT")) mConversationView.setBackgroundColor(Color.RED);
-                    mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
+                    if (readMessage.equals("/AMLOST")) changer.someoneIsMissing();
+                    else if (readMessage.equals("/AMFOUND")) changer.allClear();
+                    else {
+                        mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
+                    }
                     break;
                 case Constants.MESSAGE_DEVICE_NAME:
                     // save the connected device's name

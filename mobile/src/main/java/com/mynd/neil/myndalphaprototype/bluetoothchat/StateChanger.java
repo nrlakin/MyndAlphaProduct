@@ -65,7 +65,7 @@ public class StateChanger extends Fragment{
      */
     public void iAmMissing(){
         PhoneListenerService.sendToWatch("/ALARMON");
-        changeBackgroundColor(Color.RED);
+        //changeBackgroundColor(Color.RED);
         //music on
         try {
             AssetFileDescriptor afd = phoneContext.getAssets().openFd("alarm.mp3");//directly file name
@@ -93,7 +93,7 @@ public class StateChanger extends Fragment{
      */
     public void someoneIsMissing(){
         PhoneListenerService.sendToWatch("/OTHERALARM");
-        changeBackgroundColor(Color.YELLOW);
+        //changeBackgroundColor(Color.YELLOW);
         mp.stop();
     }
 
@@ -105,22 +105,22 @@ public class StateChanger extends Fragment{
      */
     public void allClear(){
         PhoneListenerService.sendToWatch("/ALARMOFF");
-        changeBackgroundColor(Color.GREEN);
+        //changeBackgroundColor(Color.GREEN);
         mp.stop();
     }
 
     /**
      * change the background of phone
-     * @param color
+     //* @param color
      */
-    private void changeBackgroundColor(final int color){
-        phoneContext.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                phoneLayout.setBackgroundColor(color);
-            }
-        });
-    }
+    //private void changeBackgroundColor(final int color){
+    //    phoneContext.runOnUiThread(new Runnable() {
+    //        @Override
+    //        public void run() {
+    //            phoneLayout.setBackgroundColor(color);
+    //        }
+    //    });
+   // }
 
     @Override
     public void onStart() {
