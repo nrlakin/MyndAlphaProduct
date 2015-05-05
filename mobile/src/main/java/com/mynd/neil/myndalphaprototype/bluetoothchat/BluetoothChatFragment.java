@@ -45,6 +45,9 @@ import android.widget.Toast;
 
 import com.mynd.neil.myndalphaprototype.common.logger.Log;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This fragment controls Bluetooth to communicate with other devices.
  */
@@ -64,6 +67,15 @@ public class BluetoothChatFragment extends Fragment {
     private Button mPanicButton;
 
     private boolean mAmLost = false;
+
+    private static final HashMap<String, String> mNameMap = new HashMap<String, String> () {
+        {
+            put("mynd1", "Neil");
+            put("mynd2", "Yukti");
+            put("mynd3","Yukti");
+            put("mynd5", "Matt");
+        }
+    };
 
 
     /**
@@ -314,7 +326,7 @@ public class BluetoothChatFragment extends Fragment {
                     switch (msg.arg1) {
                         case BluetoothChatService.STATE_CONNECTED:
                             setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
-                            mConversationArrayAdapter.clear();
+                            //mConversationArrayAdapter.clear();
                             break;
                         case BluetoothChatService.STATE_CONNECTING:
                             setStatus(R.string.title_connecting);
@@ -329,7 +341,7 @@ public class BluetoothChatFragment extends Fragment {
                     byte[] writeBuf = (byte[]) msg.obj;
                     // construct a string from the buffer
                     String writeMessage = new String(writeBuf);
-                    mConversationArrayAdapter.add("Me:  " + writeMessage);
+                    //mConversationArrayAdapter.add("Me:  " + writeMessage);
                     break;
                 case Constants.MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
@@ -348,8 +360,16 @@ public class BluetoothChatFragment extends Fragment {
                     // save the connected device's name
                     mConnectedDeviceName = msg.getData().getString(Constants.DEVICE_NAME);
                     if (null != activity) {
-                        Toast.makeText(activity, "Connected to "
-                                + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, "Connected to "
+                        //        + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                        //TODO: Unfake this.
+                        Toast.makeText(activity, "Connected to MyndTeam"
+                                , Toast.LENGTH_SHORT).show();
+                        mConversationArrayAdapter.add("Group Members:");
+                        mConversationArrayAdapter.add("     Neil");
+                        mConversationArrayAdapter.add("     " + mNameMap.get(mConnectedDeviceName.toString()));
+                        Log.d("NEIL", "Tried adding device name " + mConnectedDeviceName);
+
                     }
                     break;
                 case Constants.MESSAGE_TOAST:
@@ -363,17 +383,42 @@ public class BluetoothChatFragment extends Fragment {
     };
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        FragmentActivity activity = getActivity();
         switch (requestCode) {
             case REQUEST_CONNECT_DEVICE_SECURE:
                 // When DeviceListActivity returns with a device to connect
                 if (resultCode == Activity.RESULT_OK) {
-                    connectDevice(data, true);
+                    if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
+                        Log.d("NEIL","Attempting connection case REQUEST_CONNECT_DEVICE_SECURE...");
+                        connectDevice(data, true);
+                    } else {
+                        String address = data.getExtras()
+                                .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+                        // Get the BluetoothDevice object
+                        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+                        String name = mNameMap.get(device.getName().toString());
+                        mConversationArrayAdapter.add("     " + name);
+                        Toast.makeText(activity, "Added " + name + "."
+                                , Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
             case REQUEST_CONNECT_DEVICE_INSECURE:
                 // When DeviceListActivity returns with a device to connect
                 if (resultCode == Activity.RESULT_OK) {
-                    connectDevice(data, false);
+                    if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
+                        Log.d("NEIL","Attempting connection case REQUEST_CONNECT_DEVICE_SECURE...");
+                        connectDevice(data, true);
+                    } else {
+                        String address = data.getExtras()
+                                .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+                        // Get the BluetoothDevice object
+                        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+                        String name = mNameMap.get(device.getName().toString());
+                        mConversationArrayAdapter.add("     " + name);
+                        Toast.makeText(activity, "Added " + name + "."
+                                , Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
             case REQUEST_ENABLE_BT:
